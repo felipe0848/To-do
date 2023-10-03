@@ -1,33 +1,72 @@
-import { Atom } from "phosphor-react";
+import { PlusCircle } from "phosphor-react";
 import styles from "./App.module.css";
+import { Header } from "./components/Header";
+import { Task } from "./components/Task";
+import { v4 as uuidv4 } from "uuid";
+
+const tasks = [
+    {
+        id: uuidv4(),
+        isComplete: false,
+        content:
+            "Integer urna interdum massa libero auctor neque turpis turpis semper. Duis vel sed fames integer.",
+    },
+    {
+        id: uuidv4(),
+        isComplete: false,
+        content:
+            "Integer urna interdum massa libero auctor neque turpis turpis semper. Duis vel sed fames integer.",
+    },
+    {
+        id: uuidv4(),
+        isComplete: false,
+        content:
+            "Integer urna interdum massa libero auctor neque turpis turpis semper. Duis vel sed fames integer.",
+    },
+    {
+        id: uuidv4(),
+        isComplete: true,
+        content:
+            "Integer urna interdum massa libero auctor neque turpis turpis semper. Duis vel sed fames integer.",
+    },
+    {
+        id: uuidv4(),
+        isComplete: true,
+        content:
+            "Integer urna interdum massa libero auctor neque turpis turpis semper. Duis vel sed fames integer.",
+    },
+];
 
 function App() {
     return (
-        <div className={styles.wrapper}>
-            <header>
-                <Atom /> todo
-            </header>
-            <main>
-                <form action="#">
-                    <input type="text" />
-                    <button type="submit">Criar</button>
+        <div>
+            <Header />
+            <main className={styles.wrapper}>
+                <form action="#" className={styles.FormAddTask}>
+                    <input type="text" placeholder="Adicione uma nova tarefa" />
+                    <button type="submit">
+                        Criar <PlusCircle size={16} />
+                    </button>
                 </form>
+
                 <section>
-                    <header>
-                        <strong>
+                    <header className={styles.status}>
+                        <strong className={styles.blue}>
                             Tarefas criadas <span>0</span>
                         </strong>
-                        <strong>
-                            Concluidas <span>0</span>
+                        <strong className={styles.purple}>
+                            Concluidas <span>2 de 5</span>
                         </strong>
                     </header>
-                    <ul>
-                        <li>
-                            <strong>
-                                Você ainda não tem tarefas cadastradas
-                            </strong>
-                            <p>Crie tarefas e organize seus itens a fazer</p>
-                        </li>
+
+                    <ul className={styles.taskList}>
+                        {tasks.map((task) => (
+                            <Task
+                                key={task.id}
+                                content={task.content}
+                                isComplete={task.isComplete}
+                            />
+                        ))}
                     </ul>
                 </section>
             </main>

@@ -21,3 +21,8 @@
 
     font-family: "Inter", sans-serif;
 }
+
+body {
+    background-color: var(--gray-600);
+    color: var(--gray-100);
+}

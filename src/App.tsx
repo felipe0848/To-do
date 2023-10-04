@@ -3,6 +3,7 @@ import styles from "./App.module.css";
 import { Header } from "./components/Header";
 import { Task } from "./components/Task";
 import { v4 as uuidv4 } from "uuid";
+import { NoTask } from "./components/NoTask";
 
 const tasks = [
     {
@@ -49,7 +50,7 @@ function App() {
                     </button>
                 </form>
 
-                <section>
+                <section className={styles.tasks}>
                     <header className={styles.status}>
                         <strong className={styles.blue}>
                             Tarefas criadas <span>0</span>
@@ -68,6 +69,8 @@ function App() {
                             />
                         ))}
                     </ul>
+
+                    <NoTask />
                 </section>
             </main>
         </div>

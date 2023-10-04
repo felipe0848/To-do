@@ -9,7 +9,10 @@ interface TaskProps {
 export function Task({ content, isComplete }: TaskProps) {
     return (
         <li className={styles.container}>
-            <input type="checkbox" checked={isComplete} />
+            <div className={styles.round}>
+                <input type="checkbox" checked={isComplete} id="checkbox" />
+                <label htmlFor="checkbox"></label>
+            </div>
             <p
                 className={
                     isComplete ? styles.taskComplete : styles.taskNotComplete
@@ -17,7 +20,9 @@ export function Task({ content, isComplete }: TaskProps) {
             >
                 {content}
             </p>
-            <Trash size={24} />
+            <button title="Deletar tarefa">
+                <Trash size={20} />
+            </button>
         </li>
     );
 }

@@ -18,10 +18,9 @@
     border-radius: 0.5rem;
     border: 1px solid var(--gray-700);
     background: var(--gray-500);
-}
-.FormAddTask > input:focus {
     color: var(--gray-100);
 }
+
 .FormAddTask > button {
     display: flex;
     padding: 1rem;

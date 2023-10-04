@@ -4,47 +4,72 @@ import { Header } from "./components/Header";
 import { Task } from "./components/Task";
 import { v4 as uuidv4 } from "uuid";
 import { NoTask } from "./components/NoTask";
+import { ChangeEvent, FormEvent, useState } from "react";
 
-const tasks = [
-    {
-        id: uuidv4(),
-        isComplete: false,
-        content:
-            "Integer urna interdum massa libero auctor neque turpis turpis semper. Duis vel sed fames integer.",
-    },
-    {
-        id: uuidv4(),
-        isComplete: false,
-        content:
-            "Integer urna interdum massa libero auctor neque turpis turpis semper. Duis vel sed fames integer.",
-    },
-    {
-        id: uuidv4(),
-        isComplete: false,
-        content:
-            "Integer urna interdum massa libero auctor neque turpis turpis semper. Duis vel sed fames integer.",
-    },
-    {
-        id: uuidv4(),
-        isComplete: true,
-        content:
-            "Integer urna interdum massa libero auctor neque turpis turpis semper. Duis vel sed fames integer.",
-    },
-    {
-        id: uuidv4(),
-        isComplete: true,
-        content:
-            "Integer urna interdum massa libero auctor neque turpis turpis semper. Duis vel sed fames integer.",
-    },
-];
-
+export interface taskType {
+    id: string;
+    isComplete: boolean;
+    content: string;
+}
 function App() {
+    const [tasks, setTasks] = useState<taskType[]>([]);
+    const [newTaskText, setNewTaskText] = useState("");
+
+    const handleTypingNewTask = (event: ChangeEvent<HTMLInputElement>) => {
+        setNewTaskText(event.target.value);
+    };
+    const handleAddNewTask = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const newTask: taskType = {
+            id: uuidv4(),
+            isComplete: false,
+            content: newTaskText,
+        };
+        setTasks([newTask, ...tasks]);
+        setNewTaskText("");
+    };
+    const deleteTask = (id: string) => {
+        const updatedTasks = tasks.filter((task) => task.id != id);
+
+        setTasks(updatedTasks);
+    };
+
+    const updateCheck = (id: string) => {
+        const updatedTasks = tasks.map((atual) =>
+            atual.id === id
+                ? {
+                      id: atual.id,
+                      isComplete: !atual.isComplete,
+                      content: atual.content,
+                  }
+                : {
+                      id: atual.id,
+                      isComplete: atual.isComplete,
+                      content: atual.content,
+                  }
+        );
+
+        setTasks(updatedTasks);
+    };
+
+    const countTasksComplete = tasks.reduce(
+        (acc, task) => (task.isComplete ? (acc = acc + 1) : acc),
+        0
+    );
     return (
         <div>
             <Header />
             <main className={styles.wrapper}>
-                <form action="#" className={styles.FormAddTask}>
-                    <input type="text" placeholder="Adicione uma nova tarefa" />
+                <form
+                    onSubmit={handleAddNewTask}
+                    className={styles.FormAddTask}
+                >
+                    <input
+                        onChange={handleTypingNewTask}
+                        value={newTaskText}
+                        type="text"
+                        placeholder="Adicione uma nova tarefa"
+                    />
                     <button type="submit">
                         Criar <PlusCircle size={16} />
                     </button>
@@ -53,24 +78,29 @@ function App() {
                 <section className={styles.tasks}>
                     <header className={styles.status}>
                         <strong className={styles.blue}>
-                            Tarefas criadas <span>0</span>
+                            Tarefas criadas <span>{tasks.length}</span>
                         </strong>
                         <strong className={styles.purple}>
-                            Concluidas <span>2 de 5</span>
+                            Concluidas{" "}
+                            <span>
+                                {countTasksComplete} de {tasks.length}
+                            </span>
                         </strong>
                     </header>
-
-                    <ul className={styles.taskList}>
-                        {tasks.map((task) => (
-                            <Task
-                                key={task.id}
-                                content={task.content}
-                                isComplete={task.isComplete}
-                            />
-                        ))}
-                    </ul>
-
-                    <NoTask />
+                    {tasks.length > 0 ? (
+                        <ul className={styles.taskList}>
+                            {tasks.map((task) => (
+                                <Task
+                                    key={task.id}
+                                    task={task}
+                                    deleteFn={deleteTask}
+                                    checkFn={updateCheck}
+                                />
+                            ))}
+                        </ul>
+                    ) : (
+                        <NoTask />
+                    )}
                 </section>
             </main>
         </div>

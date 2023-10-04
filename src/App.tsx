@@ -17,6 +17,7 @@ function App() {
 
     const handleTypingNewTask = (event: ChangeEvent<HTMLInputElement>) => {
         setNewTaskText(event.target.value);
+        event.target.setCustomValidity("");
     };
     const handleAddNewTask = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -51,6 +52,9 @@ function App() {
 
         setTasks(updatedTasks);
     };
+    const handleInvalidText = (event: ChangeEvent<HTMLInputElement>) => {
+        event.target.setCustomValidity("Esse campo é obrigatório");
+    };
 
     const countTasksComplete = tasks.reduce(
         (acc, task) => (task.isComplete ? (acc = acc + 1) : acc),
@@ -69,6 +73,8 @@ function App() {
                         value={newTaskText}
                         type="text"
                         placeholder="Adicione uma nova tarefa"
+                        onInvalid={handleInvalidText}
+                        required
                     />
                     <button type="submit">
                         Criar <PlusCircle size={16} />

@@ -5,6 +5,14 @@
     max-width: 46rem;
     margin: 0 auto;
 }
+@media (max-width: 768px) {
+    .wrapper {
+        padding: 0 1rem;
+    }
+    html {
+        font-size: 87.5%;
+    }
+}
 .FormAddTask {
     width: 100%;
     display: flex;
@@ -19,6 +27,7 @@
     border: 1px solid var(--gray-700);
     background: var(--gray-500);
     color: var(--gray-100);
+    min-width: 0;
 }
 
 .FormAddTask > button {
